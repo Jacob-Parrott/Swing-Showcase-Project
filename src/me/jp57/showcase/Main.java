@@ -3,12 +3,13 @@ package me.jp57.showcase;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) throws IOException, FontFormatException {
         // "Oh boy! I sure wish there was a way to get custom typography in my java project!"
         // The humble Font Initializer:
-        Font overpass = Font.createFont(Font.TRUETYPE_FONT, ClassLoader.getSystemResourceAsStream("me/jp57/showcase/assets/Overpass/Overpass-Regular.ttf"));
+        Font overpass = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("me/jp57/showcase/assets/Overpass/Overpass-Regular.ttf")));
 
         // Basic Initialization of a swing JFrame window
         JFrame frame = new JFrame("Showcase");
