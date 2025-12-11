@@ -2,7 +2,6 @@ package me.jp57.showcase;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 
 public class Main {
@@ -15,12 +14,16 @@ public class Main {
         JFrame frame = new JFrame("Showcase");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 800);
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
 
         // Making a Panel for the header (to properly center it and use better positioning)
         JPanel headerPanel = new JPanel();
+        JPanel basePanel = new JPanel();
         headerPanel.setLayout(new GridBagLayout());
+        basePanel.setLayout(new FlowLayout());
         frame.add(headerPanel, BorderLayout.NORTH);
+        frame.add(basePanel);
 
         // Adding constraints to the panel
         GridBagConstraints gbc = new GridBagConstraints();
@@ -31,14 +34,28 @@ public class Main {
         gbc.anchor = GridBagConstraints.CENTER; // Center the label
         gbc.fill = GridBagConstraints.NONE; // Do not stretch
 
-        // Adding Text
-        Label welcome =  new Label("Welcome to my Showcase!", JLabel.CENTER);
-        welcome.setFont(new Font("overpass", Font.PLAIN, 32));
+        // Header
+        JLabel welcome =  new JLabel("Welcome to my Showcase!", JLabel.CENTER);
+        welcome.setFont(new Font("overpass", Font.BOLD, 32));
         headerPanel.add(welcome);
 
+        // Biography
+        JLabel biography = getBiographyLabel();
+        basePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        basePanel.add(biography);
 
 
         // So lowkey its visible now
         frame.setVisible(true);
+    }
+
+    // This just simplifies the Label into a separate static area to make code easier to read (I guess)
+    private static JLabel getBiographyLabel() {
+        JLabel biography = new JLabel("<html><div style='text-align: center; padding: 5px;'>Hey, I'm Jacob!<br><br>I'm a student at SICTC studying computer science, and i've been a fan of computers for way longer.<br><br>I am very interested in building & repairing computers, as well as writing programs in Java.</div></html>", JLabel.CENTER);
+        biography.setFont(new Font("overpass", Font.PLAIN, 18));
+        biography.setPreferredSize(new Dimension(550,300));
+        biography.setOpaque(true);
+        biography.setBackground(new Color(225,225,225));
+        return biography;
     }
 }
