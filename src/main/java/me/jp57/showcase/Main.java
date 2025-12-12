@@ -6,7 +6,6 @@ import com.formdev.flatlaf.intellijthemes.FlatGradiantoMidnightBlueIJTheme;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,17 +14,19 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Main {
+    // Loading Inter font stuff
+    public static Font inter = new Font( FlatInterFont.FAMILY, Font.PLAIN, 18);
+    public static Font interBold = new Font (FlatInterFont.FAMILY, Font.BOLD, 18);
+    public static Font interHeader = interBold.deriveFont(interBold.getStyle(), 28);
+    public static Font interButton = inter.deriveFont(inter.getStyle(), 14);
+
     public static void main(String[] args) throws IOException, FontFormatException {
+
         // FlatLaF setup (I want this to look slightly good)
         FlatInterFont.install();
         FlatLaf.setPreferredFontFamily(FlatInterFont.FAMILY);
         FlatLaf.setup(new FlatGradiantoMidnightBlueIJTheme());
 
-        // Loading Inter font stuff
-        Font inter = new Font( FlatInterFont.FAMILY, Font.PLAIN, 18);
-        Font interBold = new Font (FlatInterFont.FAMILY, Font.BOLD, 18);
-        Font interHeader = interBold.deriveFont(interBold.getStyle(), 28);
-        Font interButton = inter.deriveFont(inter.getStyle(), 14);
 
         // Basic Initialization of a swing JFrame window
         JFrame frame = new JFrame("Showcase");
@@ -70,7 +71,7 @@ public class Main {
         // Images.. apparently...
         BufferedImage headshotPic = ImageIO.read(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("assets/Images/headshot.jpg")));
         JLabel headshotLabel = new JLabel(new ImageIcon(headshotPic));
-        BufferedImage topicPic = ImageIO.read(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("assets/Images/csstock.jpeg")));
+        BufferedImage topicPic = ImageIO.read(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("assets/Images/stock.jpeg")));
         JLabel topicLabel = new JLabel(new ImageIcon(topicPic));
         basePanel.add(headshotLabel, BorderLayout.EAST);
         basePanel.add(topicLabel, BorderLayout.WEST);
@@ -93,7 +94,8 @@ public class Main {
         GTNButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showInputDialog("meow?");
+                frame.setVisible(false);
+                GuessTheNumber.guessTheNumber(frame).setVisible(true);
             }
         });
 
@@ -103,7 +105,6 @@ public class Main {
 
     // This just simplifies the Label into a separate static area to make code easier to read (I guess)
     private static JLabel getBiographyLabel() {
-        JLabel biography = new JLabel("<html><div style='text-align: center; padding: 5px;'>Hey, I'm Jacob!<br><br>I'm a student at SICTC studying computer science, and i've been a fan of computers for way longer.<br><br>I am very interested in building & repairing computers, as well as writing programs in Java.</div></html>", JLabel.CENTER);
-        return biography;
+        return new JLabel("<html><div style='text-align: center; padding: 5px;'>Hey, I'm Jacob!<br><br>I'm a student at SICTC studying computer science, and i've been a fan of computers for way longer.<br><br>I am very interested in building & repairing computers, as well as writing programs in Java.</div></html>", JLabel.CENTER);
     }
 }
