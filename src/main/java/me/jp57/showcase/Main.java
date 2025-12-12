@@ -1,18 +1,31 @@
 package me.jp57.showcase;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.fonts.inter.FlatInterFont;
+import com.formdev.flatlaf.intellijthemes.FlatGradiantoMidnightBlueIJTheme;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
+import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) throws IOException, FontFormatException {
-        // "Oh boy! I sure wish there was a way to get custom typography in my java project!"
-        // The humble Font Initializer:
-        Font overpass = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("me/jp57/showcase/assets/Overpass/Overpass-Regular.ttf")));
+        // FlatLaF setup (I want this to look slightly good)
+        FlatInterFont.install();
+        FlatLaf.setPreferredFontFamily(FlatInterFont.FAMILY);
+        FlatLaf.setup(new FlatGradiantoMidnightBlueIJTheme());
+
+        // Loading Inter font stuff
+        Font inter = new Font( FlatInterFont.FAMILY, Font.PLAIN, 18);
+        Font interBold = new Font (FlatInterFont.FAMILY, Font.BOLD, 18);
+        Font interHeader = interBold.deriveFont(interBold.getStyle(), 28);
+        Font interButton = inter.deriveFont(inter.getStyle(), 14);
 
         // Basic Initialization of a swing JFrame window
         JFrame frame = new JFrame("Showcase");
@@ -43,36 +56,46 @@ public class Main {
 
         // Header
         JLabel welcome =  new JLabel("Welcome to my Showcase!", JLabel.CENTER);
-        welcome.setFont(new Font("overpass", Font.BOLD, 32));
+        welcome.setFont(interHeader);
         headerPanel.add(welcome);
 
         // Biography (2-3 sentences about myself, includes favorite hobbies)
         JLabel biography = getBiographyLabel();
         basePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        biography.setPreferredSize(new Dimension(550,225));
+        biography.setFont(inter);
         basePanel.add(biography);
 
 
         // Images.. apparently...
-        BufferedImage headshotPic = ImageIO.read(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("me/jp57/showcase/assets/Images/Nextech2025-129.jpg")));
+        BufferedImage headshotPic = ImageIO.read(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("assets/Images/headshot.jpg")));
         JLabel headshotLabel = new JLabel(new ImageIcon(headshotPic));
-        BufferedImage topicPic = ImageIO.read(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("me/jp57/showcase/assets/Images/pexels-photo-546819.jpeg")));
+        BufferedImage topicPic = ImageIO.read(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("assets/Images/csstock.jpeg")));
         JLabel topicLabel = new JLabel(new ImageIcon(topicPic));
         basePanel.add(headshotLabel, BorderLayout.EAST);
         basePanel.add(topicLabel, BorderLayout.WEST);
 
         // Buttons to redirect you to the games
-        JButton GTNButton = new JButton("Guess The Number");
+        JButton GTNButton = new JButton("Number Game");
         JButton MadLibsButton = new JButton("MadLibs");
-        JButton SciFiButton = new JButton("Sci-Fi Name Generator");
-        GTNButton.setSize(new Dimension(100,300));
-        GTNButton.setMaximumSize(GTNButton.getSize());
-        MadLibsButton.setMaximumSize(MadLibsButton.getSize());
-        SciFiButton.setMaximumSize(SciFiButton.getSize());
-        MadLibsButton.setSize(new Dimension(100,300));
-        SciFiButton.setSize(new Dimension(100,300));
+        JButton SciFiButton = new JButton("Sci-Fi Name");
+        GTNButton.setPreferredSize(new Dimension(150,150));
+        MadLibsButton.setPreferredSize(new Dimension(150,150));
+        SciFiButton.setPreferredSize(new Dimension(150,150));
+        GTNButton.setFont(interButton);
+        MadLibsButton.setFont(interButton);
+        SciFiButton.setFont(interButton);
         buttonPanel.add(GTNButton);
         buttonPanel.add(MadLibsButton);
         buttonPanel.add(SciFiButton);
+
+        // Button Functionality
+        GTNButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showInputDialog("meow?");
+            }
+        });
 
         // So lowkey its visible now
         frame.setVisible(true);
@@ -81,10 +104,6 @@ public class Main {
     // This just simplifies the Label into a separate static area to make code easier to read (I guess)
     private static JLabel getBiographyLabel() {
         JLabel biography = new JLabel("<html><div style='text-align: center; padding: 5px;'>Hey, I'm Jacob!<br><br>I'm a student at SICTC studying computer science, and i've been a fan of computers for way longer.<br><br>I am very interested in building & repairing computers, as well as writing programs in Java.</div></html>", JLabel.CENTER);
-        biography.setFont(new Font("overpass", Font.PLAIN, 18));
-        biography.setPreferredSize(new Dimension(550,225));
-        biography.setOpaque(true);
-        biography.setBackground(new Color(225,225,225));
         return biography;
     }
 }
