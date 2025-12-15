@@ -25,6 +25,19 @@ public class SciFiNameGenerator {
         title.setFont(interBold);
         headerPanel.add(title);
 
+        // Back Button
+        JButton backButton = new JButton("◄");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false);
+                main.setVisible(true);
+            }
+        });
+        backButton.setPreferredSize(new Dimension(35, 35));
+        headerPanel.add(backButton);
+
+
         // Panels for inputs (left side)
         JPanel leftInputPanel = new JPanel();
         leftInputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));

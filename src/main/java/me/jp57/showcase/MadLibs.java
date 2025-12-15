@@ -25,6 +25,19 @@ public class MadLibs {
         title.setFont(interBold);
         headerPanel.add(title);
 
+        // Back Button
+        JButton backButton = new JButton("◄");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false);
+                main.setVisible(true);
+            }
+        });
+        backButton.setPreferredSize(new Dimension(35, 35));
+        headerPanel.add(backButton);
+
+
         String[] stories = {
                 "At the beach, I found a (adjective) (noun). It was (adjective)!",
                 "For my birthday, I got a (adjective) (noun). It was great!",
