@@ -2,17 +2,21 @@ package me.jp57.showcase;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static me.jp57.showcase.Main.*;
 
 public class GuessTheNumber {
     public static JFrame guessTheNumber(JFrame main ) {
 
-        int lives = 10;
-        boolean isAlive = true;
+        AtomicInteger lives = new AtomicInteger(10);
         Random rand = new Random();
-        int correctGuess = rand.nextInt(0,9)+1;
+        AtomicInteger correctGuess = new AtomicInteger(rand.nextInt(0,9)+1);
 
         // Setting up the window
         JFrame frame = new JFrame("Guess the Number!");
@@ -50,6 +54,49 @@ public class GuessTheNumber {
         guessButton.setFont(interButton);
         guessButton.setPreferredSize(new Dimension(400, 200));
         guessPanel.add(guessButton, BorderLayout.SOUTH);
+
+        // Guess button function!
+        guessButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (guessButton.getText().equals("Guess!")) {
+                    if (Integer.parseInt(guessField.getText()) != correctGuess.get()) {
+                        if (lives.get() > 1){
+                            lives.decrementAndGet();
+                            welcome.setText("Welcome! Guess a number 1-10, You have " + lives + " lives.");
+                            if (Integer.parseInt(guessField.getText()) > correctGuess.get()) {
+                                hint.setText("Lower");
+                            } else {
+                                hint.setText("Higher");
+                            }
+                            guessField.setText("");
+                        } else {
+                            hint.setText("You lost the game!");
+                            welcome.setText("Welcome! Guess a number 1-10, You have 0 lives.");
+                            guessButton.setText("Play Again!");
+                        }
+                    } else {
+                        hint.setText("You guessed it!");
+                        guessButton.setText("Play Again!");
+                    }
+                } else {
+                    lives.set(10);
+                    correctGuess.set(rand.nextInt(0,9)+1);
+                    welcome.setText("Welcome! Guess a number 1-10, You have " + lives + " lives.");
+                    guessButton.setText("Guess!");
+                    hint.setText("What could the number be?");
+                    guessField.setText("");
+                }
+            }
+        });
+
+        guessField.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                String value =  guessField.getText();
+                guessField.setEditable(e.getKeyChar() >= '0' && e.getKeyChar() <= '9' || e.getKeyChar() < 32);
+
+            }
+        });
 
         return frame;
     }
