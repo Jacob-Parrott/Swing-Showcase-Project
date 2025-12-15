@@ -99,6 +99,14 @@ public class Main {
             }
         });
 
+        SciFiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false);
+                SciFiNameGenerator.sciFiNameGenerator(frame).setVisible(true);
+            }
+        });
+
         // So lowkey its visible now
         frame.setVisible(true);
     }
